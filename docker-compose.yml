@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: . # Dockerfileが存在するディレクトリを指定
+    container_name: laravel-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+    ports:
+      - 8000:8000
+    networks:
+      - laravel
+    depends_on:
+      - mysql
+    command: bash -c "composer install && php artisan serve --host=0.0.0.0 --port=8000"
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - laravel
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - 1025:1025 # SMTP
+      - 8025:8025 # Web UI
+    networks:
+      - laravel
+
+networks:
+  laravel:
+
+volumes:
+  db-data:
