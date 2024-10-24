@@ -7,33 +7,51 @@
         </div>
 
         <div class="grid grid-cols-7 gap-2">
-            <div class="bg-green-100 text-center p-4 h-96 rounded-lg">
+            <div class="bg-green-100 text-center p-4 h-fit rounded-lg">
                 <span class="text-xs block">月</span>
                 <span class="text-sm font-semibold">下半身</span>
             </div>
-            <div class="bg-blue-100 text-center p-4 h-96 rounded-lg">
+            <div class="bg-blue-100 text-center p-4 h-fit rounded-lg">
                 <span class="text-xs block">火</span>
                 <span class="text-sm font-semibold">上半身</span>
             </div>
-            <div class="bg-orange-100 text-center p-4 h-96 rounded-lg">
+            <div class="bg-orange-100 text-center p-4 h-fit rounded-lg">
                 <span class="text-xs block">水</span>
                 <span class="text-sm font-semibold">有酸素</span>
             </div>
-            <div class="bg-gray-200 text-center p-4 h-96 rounded-lg">
+            <div class="bg-gray-200 text-center p-4 h-fit rounded-lg">
                 <span class="text-xs block">木</span>
                 <span class="text-sm font-semibold">休息</span>
             </div>
-            <div class="bg-blue-100 text-center p-4 h-96 rounded-lg">
+            <div class="bg-blue-100 text-center p-4 h-fit rounded-lg">
                 <span class="text-xs block">金</span>
                 <span class="text-sm font-semibold">上半身</span>
             </div>
-            <div class="bg-green-100 text-center p-4 h-96 rounded-lg">
+            <div class="bg-green-100 text-center p-4 h-fit rounded-lg">
                 <span class="text-xs block">土</span>
                 <span class="text-sm font-semibold">下半身</span>
             </div>
-            <div class="bg-gray-200 text-center p-4 h-96 rounded-lg">
+            <div class="bg-gray-200 text-center p-4 h-fit rounded-lg">
                 <span class="text-xs block">日</span>
                 <span class="text-sm font-semibold">休息</span>
+            </div>
+        </div>
+        <div class="flex justify-around text-sm mt-3">
+            <div class="flex items-center">
+                <span class="block w-4 h-4 bg-green-100 rounded-full mr-2"></span>
+                <span>下半身</span>
+            </div>
+            <div class="flex items-center">
+                <span class="block w-4 h-4 bg-blue-100 rounded-full mr-2"></span>
+                <span>上半身</span>
+            </div>
+            <div class="flex items-center">
+                <span class="block w-4 h-4 bg-orange-100 rounded-full mr-2"></span>
+                <span>有酸素</span>
+            </div>
+            <div class="flex items-center">
+                <span class="block w-4 h-4 bg-gray-200 rounded-full mr-2"></span>
+                <span>休息</span>
             </div>
         </div>
     </div>
