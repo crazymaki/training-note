@@ -4,7 +4,8 @@
         <nav class="flex flex-col space-y-4">
             <a href="{{ route('home') }}"
                 class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">ホーム</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">トレーニング記録</a>
+            <a href="{{ route('training.index') }}"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">トレーニング記録</a>
             <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">進捗管理</a>
             <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">設定</a>
         </nav>
