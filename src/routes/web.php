@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\ProgressController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,7 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/trainig', [TrainingController::class, 'index'])->name('training.index');
+    Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
+    Route::get('/progress', [ProgressController::class, 'index'])->name('progress.index');
 });
 
 require __DIR__.'/auth.php';
