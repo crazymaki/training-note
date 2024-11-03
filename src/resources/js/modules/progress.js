@@ -1,28 +1,32 @@
-class ProgressCalendar {
-    constructor() {
-        this.calendarElement = null;
-        this.currentMonth = new Date().getMonth();
-        this.currentYear = new Date().getFullYear();
-        this.init();
-    }
+// グローバルスコープで関数を定義
+window.openModal = function (day) {
+    const modal = document.getElementById("modal");
+    if (!modal) return;
 
-    init() {
-        // 要素が見つかるまで待機
-        const checkElement = setInterval(() => {
-            this.calendarElement = document.getElementById("progress-calendar");
-            if (this.calendarElement) {
-                clearInterval(checkElement);
-                this.initializeCalendar();
-            }
-        }, 100);
+    const modalTitle = document.getElementById("modal-title");
+    if (modalTitle) {
+        modalTitle.innerText = `${day}日のトレーニング内容`;
     }
+    modal.classList.remove("hidden");
+};
 
-    initializeCalendar() {
-        this.updateCalendar();
-        this.bindEvents();
+window.closeModal = function () {
+    const modal = document.getElementById("modal");
+    if (modal) {
+        modal.classList.add("hidden");
     }
+};
 
-    updateCalendar() {
+// プログレスページ専用の初期化関数
+function initProgressPage() {
+    const calendarElement = document.getElementById("progress-calendar");
+    if (!calendarElement) return;
+
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+
+    // カレンダーの更新関数
+    function updateCalendar() {
         const monthNames = [
             "1月",
             "2月",
@@ -37,50 +41,33 @@ class ProgressCalendar {
             "11月",
             "12月",
         ];
-        this.calendarElement.innerText = `${this.currentYear}年 ${
-            monthNames[this.currentMonth]
-        }`;
+        calendarElement.innerText = `${currentYear}年 ${monthNames[currentMonth]}`;
     }
 
-    changeMonth(direction) {
-        this.currentMonth += direction;
-        if (this.currentMonth < 0) {
-            this.currentMonth = 11;
-            this.currentYear -= 1;
-        } else if (this.currentMonth > 11) {
-            this.currentMonth = 0;
-            this.currentYear += 1;
+    // 月を変更する関数
+    window.changeMonth = function (direction) {
+        currentMonth += direction;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear -= 1;
+        } else if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear += 1;
         }
-        this.updateCalendar();
-    }
+        updateCalendar();
+    };
 
-    bindEvents() {
-        // イベントリスナーの設定
-        window.changeMonth = (direction) => this.changeMonth(direction);
-        window.openModal = this.openModal;
-        window.closeModal = this.closeModal;
-    }
+    // 初期表示
+    updateCalendar();
 
-    openModal(day) {
-        const modal = document.getElementById("modal");
-        if (!modal) return;
-
-        const modalTitle = document.getElementById("modal-title");
-        if (modalTitle) {
-            modalTitle.innerText = `${day}日のトレーニング内容`;
-        }
-        modal.classList.remove("hidden");
-    }
-
-    closeModal() {
-        const modal = document.getElementById("modal");
-        if (modal) {
-            modal.classList.add("hidden");
-        }
-    }
+    // カレンダーの日付クリックイベントを設定
+    document.querySelectorAll(".calendar-day").forEach((element) => {
+        element.addEventListener("click", function () {
+            const day = this.dataset.day;
+            openModal(day);
+        });
+    });
 }
 
-// ページ固有の要素があるかどうかをチェック
-if (document.querySelector('[data-page="progress"]')) {
-    new ProgressCalendar();
-}
+// DOMContentLoaded時に初期化
+document.addEventListener("DOMContentLoaded", initProgressPage);
