@@ -8,7 +8,8 @@
                 class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">トレーニング記録</a>
             <a href="{{ route('progress.index') }}"
                 class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">進捗管理</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">設定</a>
+            <a href="{{ route('setting.index') }}"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 px-4 rounded">設定</a>
         </nav>
     </div>
 
