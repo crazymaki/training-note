@@ -19,8 +19,6 @@
     <button type="button" class="bg-blue-500 text-white py-2 px-4 rounded-lg" onclick="addSet()">セットを追加</button>
 </div>
 
-</div>
-
 <div class="text-center">
     <button class="bg-green-500 text-white py-2 px-6 rounded-lg">トレーニングを保存</button>
 </div>

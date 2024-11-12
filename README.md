@@ -24,7 +24,8 @@
 
    - `id` : 主キー
    - `name` : 名前
-   - `age` : 年齢
+   - `gender` : 性別
+   - `date_of_birth` : 誕生日
    - `height` : 身長
    - `weight` : 体重（初期体重、現在の体重）
    - `email` : メールアドレス
@@ -37,23 +38,35 @@
    - `target_body_fat` : 目標体脂肪率
    - `target_training_weight` : トレーニング目標重量
 
-3. **WorkoutMaster**（トレーニングマスター）
+3. **ExercisesCategoryMaster**（トレーニングカテゴリーマスター）
 
    - `id` : 主キー
-   - `part` : トレーニング部位（例：胸、脚、背中）
-   - `exercise` : トレーニング内容（例：ベンチプレス、スクワット）
+   - `category_name` : トレーニング部位（例：胸、脚、背中）
+   - `description` : 説明
 
-4. **WorkoutRecords**（トレーニング記録）
+4. **ExercisesMaster**（トレーニングマスター）
 
    - `id` : 主キー
-   - `user_id` : `Users`テーブルと紐づける外部キー
+   - `exercise_name` : トレーニング名
+   - `category_id` : カテゴリー ID
+   - `description` : 説明
+
+5. **workouts**（トレーニング記録）
+
+   - `id` : 主キー
    - `date` : トレーニング日
-   - `exercise_id` : `WorkoutMaster`テーブルと紐づける外部キー
+   - `notes` : メモ
+
+6. **Exercises**（トレーニング記録）
+
+   - `id` : 主キー
+   - `workout_id` : `Workout`テーブルと紐づける外部キー
+   - `exercises_id` : `ExercisesMaster`テーブルと紐づける外部キー
    - `sets` : セット数
    - `reps` : レップ数
    - `weight` : 使用重量
 
-5. **DailyRecords**（日々の記録）
+7. **DailyRecords**（日々の記録）
    - `id` : 主キー
    - `user_id` : `Users`テーブルと紐づける外部キー
    - `date` : 記録日

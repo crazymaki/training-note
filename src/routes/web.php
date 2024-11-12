@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\ProgressController;
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/training', [TrainingController::class, 'index'])->name('training.index');
     Route::get('/progress', [ProgressController::class, 'index'])->name('progress.index');
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+    Route::get('/api/training/menus', [ApiController::class, 'getTrainingMenu']);
 });
 
 require __DIR__.'/auth.php';
