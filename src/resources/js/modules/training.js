@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 $(function () {
-    if ($("main > div").data("page") != "training") {
+    if ($("main > div").data("page") !== "training") {
         return;
     }
 
@@ -33,13 +33,13 @@ $(function () {
     function getTrainingmenu(params) {
         // GETリクエストを送信
         axios
-            .get(api_url, { params })
+            .get(api_url, {params})
             .then((response) => {
                 // 成功した場合の処理
                 $("#training-menu").empty();
                 response.data.forEach((item) => {
                     $("#training-menu").append(
-                        `<option value="${item.exercises_id}">${item.exercise_name}</option>`
+                        `<option value="${item.id}">${item.exercise_name}</option>`
                     );
                 });
             })
@@ -59,7 +59,7 @@ $(function () {
                 modal.removeClass("hidden");
                 // モーダル初期表示時
                 // 胸トレの内容を取得
-                getTrainingmenu({ category_id: 1 });
+                getTrainingmenu({category_id: 1});
 
                 // モーダルを閉じる処理
                 $("#close-modal").on("click", function () {
@@ -70,6 +70,9 @@ $(function () {
                 $("#add-exercise-form").on("submit", function (e) {
                     e.preventDefault();
                     const formData = new FormData(this);
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
                     $.ajax({
                         url: "/training/add",
                         method: "POST",

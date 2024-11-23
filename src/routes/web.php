@@ -25,8 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::get('/api/training/menus', [ApiController::class, 'getTrainingMenu']);
     Route::get('/training/add-exercise-modal', [TrainingController::class, 'getAddExerciseModal']);
-    Route::post('/training/add', [TrainingController::class, 'addExercise']);
+    Route::post('/training/add', [TrainingController::class, 'add']);
 });
 
-require __DIR__.'/auth.php';
 require __DIR__.'/auth.php';

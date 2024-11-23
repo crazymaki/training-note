@@ -2,9 +2,10 @@
     <div class="rounded-lg p-6 shadow-lg w-96">
         <h2 class="text-xl font-bold mb-4">トレーニングを追加</h2>
         <form id="add-exercise-form">
+            <input type="hidden" name="date" value="{{ date('Y-m-d') }}">
             <div class="mb-4">
                 <label class="block text-sm font-medium ">部位</label>
-                <select id='training-category'
+                <select id='training-category' name="category"
                     class="mt-1 block w-full border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     @foreach($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
@@ -14,7 +15,7 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium ">種目</label>
                 <div class="mb-4">
-                    <select id="training-menu"
+                    <select id="training-menu" name='exercises'
                         class="mt-1 block w-full border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </select>
                 </div>

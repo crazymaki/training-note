@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\TrainingRequest;
 use App\Models\ExercisesCategoryMaster;
+use App\Models\Workout;
+use App\Models\Exercise;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingController extends Controller
 {
@@ -44,5 +49,25 @@ class TrainingController extends Controller
         $categories = ExercisesCategoryMaster::all();
 
         return view('components.modal.training.add-exercise-modal', compact('categories'));
+    }
+
+    public function add(TrainingRequest $request)
+    {
+        // データの保存処理
+        $workout = new Workout();
+        $workout->date = $request->input('date');
+        $workout->user_id = Auth::id();
+        $workout->save();
+
+        $exercise = new Exercise();
+        $exercise->weight = $request->input('weight');
+        $exercise->sets = $request->input('sets');
+        // TODO 現在対応できていない
+        $exercise->reps = 0;
+        $exercise->exercises_id = $request->input('exercises');
+        $exercise->workout_id = $workout->id;
+        $exercise->save();
+
+        return response()->json(['success' => true]);
     }
 }
