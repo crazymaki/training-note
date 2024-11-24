@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+  permissions:
+    issues: write
+
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
