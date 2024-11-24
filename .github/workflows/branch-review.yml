@@ -3,21 +3,21 @@ name: SonarCloud Scan
 on:
   push:
     branches:
-      - main # メインブランチの変更時に実行
+      - main
   pull_request:
     branches:
-      - main # プルリクエスト時に実行
+      - main
 
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. リポジトリのコードをチェックアウト
+      # リポジトリのコードをチェックアウト
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Java 17 のセットアップ（SonarCloudが必要とするバージョン）
+      # Java 17 のセットアップ
       - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
@@ -25,14 +25,14 @@ jobs:
           distribution: "adopt"
 
       # Javaバージョン確認（オプション）
-      - name: Check Java version
+      - name: Verify Java version
         run: java -version
 
-      # 3. SonarCloud スキャンを実行
+      # SonarCloud スキャンを実行
       - name: Run SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v1
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # GitHub Secretsに保存したトークンを使用
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=crazymaki_training-note
