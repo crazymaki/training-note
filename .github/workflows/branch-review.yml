@@ -30,7 +30,7 @@ jobs:
 
       # SonarCloud スキャンを実行
       - name: Run SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
@@ -38,4 +38,6 @@ jobs:
             -Dsonar.projectKey=crazymaki_training-note
             -Dsonar.organization=your-organization-key
             -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.java.source=17
+            -Dsonar.java.target=17
             -X
