@@ -37,6 +37,8 @@ jobs:
             -Dsonar.projectKey=crazymaki_training-note
             -Dsonar.organization=crazymaki
             -Dsonar.host.url=https://sonarcloud.io
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # ここでSONAR_TOKENを指定
 
       - name: Check if SonarCloud scan was successful
         id: check-sonarcloud-status
