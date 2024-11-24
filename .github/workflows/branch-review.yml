@@ -1,65 +1,40 @@
-name: Branch Commit Review
+name: SonarCloud Scan
 
 on:
   push:
     branches:
-      - main # 対象のブランチ
+      - main # メインブランチの変更時に実行
+  pull_request:
+    branches:
+      - main # プルリクエスト時に実行
 
 jobs:
-  review:
+  sonarcloud:
     runs-on: ubuntu-latest
 
     steps:
-      # コードをチェックアウト
-      - name: Checkout Code
-        uses: actions/checkout@v2
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # SonarQubeのセットアップ
-      - name: Set up SonarQube Scanner
-        uses: sonarsource/sonarcloud-github-action@v1
+      # 2. Java 17 のセットアップ（SonarCloudが必要とするバージョン）
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
         with:
-          entryPoint: "sonar-scanner"
-          args: "-Dsonar.projectKey=${{ github.repository }} -Dsonar.organization=your-organization-key -Dsonar.host.url=https://sonarcloud.io"
+          java-version: "17"
+          distribution: "adopt"
+
+      # Javaバージョン確認（オプション）
+      - name: Check Java version
+        run: java -version
+
+      # 3. SonarCloud スキャンを実行
+      - name: Run SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v1
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarQubeトークン
-
-      # SonarQube解析の実行
-      - name: Run SonarQube Analysis
-        run: |
-          # SonarQubeの解析を実行するためのコマンド
-          sonar-scanner \
-            -Dsonar.projectKey=${{ github.repository }} \
-            -Dsonar.organization=your-organization-key \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
-      # SonarQubeの指摘事項をGitHub Issueに投稿
-      - name: Post Issues to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub Actionsにデフォルトで提供されるトークン
-        run: |
-          # SonarQube APIから指摘事項を取得
-          issues=$(curl -s -X GET "https://sonarcloud.io/api/issues/search?componentKeys=${{ github.repository }}&ps=500&severities=CRITICAL,MAJOR" \
-            -u ${{ secrets.SONAR_TOKEN }}: \
-            -H "Content-Type: application/json")
-
-          # 取得した指摘事項をIssueとして作成
-          if [ -n "$issues" ]; then
-            for issue in $(echo "$issues" | jq -r '.issues[] | @base64'); do
-              _jq() {
-                echo ${issue} | base64 --decode | jq -r ${1}
-              }
-
-              # 指摘事項をIssueタイトルと本文に設定
-              title="SonarQube Issue: $(_jq '.rule')"
-              body="**Severity**: $(_jq '.severity')\n**Message**: $(_jq '.message')\n\n**File**: $(_jq '.component')\n**Line**: $(_jq '.line')"
-
-              # GitHub Issueを作成
-              curl -X POST \
-                -H "Authorization: token $GITHUB_TOKEN" \
-                -d '{"title": "'"$title"'","body": "'"$body"'"}' \
-                "https://api.github.com/repos/${{ github.repository }}/issues"
-            done
-          else
-            echo "No issues found."
-          fi
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # GitHub Secretsに保存したトークンを使用
+        with:
+          args: >
+            -Dsonar.projectKey=crazymaki_training-note
+            -Dsonar.organization=your-organization-key
+            -Dsonar.host.url=https://sonarcloud.io
