@@ -38,3 +38,4 @@ jobs:
             -Dsonar.projectKey=crazymaki_training-note
             -Dsonar.organization=your-organization-key
             -Dsonar.host.url=https://sonarcloud.io
+            -X
