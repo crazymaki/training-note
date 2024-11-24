@@ -1,4 +1,5 @@
 name: Branch Commit Review
+
 on:
   push:
     branches:
@@ -7,31 +8,55 @@ on:
 jobs:
   review:
     runs-on: ubuntu-latest
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-    permissions:
-      contents: read
-      issues: write
-      pull-requests: write
 
     steps:
+      # コードをチェックアウト
       - name: Checkout Code
         uses: actions/checkout@v2
+
+      # SonarQubeのセットアップ
+      - name: Set up SonarQube Scanner
+        uses: sonarsource/sonarcloud-github-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          sonar_token: ${{ secrets.SONAR_TOKEN }} # GitHub Secretsに設定したSONAR_TOKEN
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.8"
+      # SonarQube解析の実行
+      - name: Run SonarQube Analysis
+        run: |
+          # SonarQubeの解析を実行するためのコマンド
+          sonar-scanner \
+            -Dsonar.projectKey=${{ github.repository }} \
+            -Dsonar.organization=your-organization-key \
+            -Dsonar.host.url=https://your-sonar-instance.com \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run Review Script
-        run: python scripts/code_review_script.py
+      # SonarQubeの指摘事項をGitHub Issueに投稿
+      - name: Post Issues to GitHub
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          BRANCH: ${{ github.ref_name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub Actionsにデフォルトで提供されるトークン
+        run: |
+          # SonarQube APIから指摘事項を取得
+          issues=$(curl -s -X GET "https://your-sonar-instance.com/api/issues/search?componentKeys=${{ github.repository }}&ps=500&severities=CRITICAL,MAJOR" \
+            -u ${{ secrets.SONAR_TOKEN }}: \
+            -H "Content-Type: application/json")
+
+          # 取得した指摘事項をIssueとして作成
+          if [ -n "$issues" ]; then
+            for issue in $(echo "$issues" | jq -r '.issues[] | @base64'); do
+              _jq() {
+                echo ${issue} | base64 --decode | jq -r ${1}
+              }
+
+              # 指摘事項をIssueタイトルと本文に設定
+              title="SonarQube Issue: $(_jq '.rule')"
+              body="**Severity**: $(_jq '.severity')\n**Message**: $(_jq '.message')\n\n**File**: $(_jq '.component')\n**Line**: $(_jq '.line')"
+
+              # GitHub Issueを作成
+              curl -X POST \
+                -H "Authorization: token $GITHUB_TOKEN" \
+                -d '{"title": "'"$title"'","body": "'"$body"'"}' \
+                "https://api.github.com/repos/${{ github.repository }}/issues"
+            done
+          else
+            echo "No issues found."
+          fi
