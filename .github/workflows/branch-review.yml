@@ -8,22 +8,21 @@ jobs:
   review:
     runs-on: ubuntu-latest
 
+    permissions:
+      issues: write # Issue 作成のための書き込み権限を追加
+
     steps:
-      # コードをチェックアウト
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # Python 環境のセットアップ
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: "3.8"
 
-      # 依存関係をインストール
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # スクリプトを実行
       - name: Run Review Script
         run: python scripts/code_review_script.py
         env:
