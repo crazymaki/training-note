@@ -19,7 +19,7 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@v1
         with:
           entryPoint: "sonar-scanner"
-          args: "-Dsonar.projectKey=${{ github.repository }} -Dsonar.organization=your-organization-key -Dsonar.host.url=https://your-sonar-instance.com"
+          args: "-Dsonar.projectKey=${{ github.repository }} -Dsonar.organization=your-organization-key -Dsonar.host.url=https://sonarcloud.io"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarQubeトークン
 
@@ -30,7 +30,7 @@ jobs:
           sonar-scanner \
             -Dsonar.projectKey=${{ github.repository }} \
             -Dsonar.organization=your-organization-key \
-            -Dsonar.host.url=https://your-sonar-instance.com \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       # SonarQubeの指摘事項をGitHub Issueに投稿
@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub Actionsにデフォルトで提供されるトークン
         run: |
           # SonarQube APIから指摘事項を取得
-          issues=$(curl -s -X GET "https://your-sonar-instance.com/api/issues/search?componentKeys=${{ github.repository }}&ps=500&severities=CRITICAL,MAJOR" \
+          issues=$(curl -s -X GET "https://sonarcloud.io/api/issues/search?componentKeys=${{ github.repository }}&ps=500&severities=CRITICAL,MAJOR" \
             -u ${{ secrets.SONAR_TOKEN }}: \
             -H "Content-Type: application/json")
 
