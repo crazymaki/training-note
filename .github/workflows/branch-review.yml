@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      issues: write # Issue 作成のための書き込み権限を追加
+      contents: read
+      issues: write
+      pull-requests: write
 
     steps:
       - name: Checkout Code
