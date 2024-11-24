@@ -35,7 +35,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=crazymaki_training-note
-            -Dsonar.organization=your-organization-key
+            -Dsonar.organization=crazymaki
             -Dsonar.host.url=https://sonarcloud.io
 
       - name: Check if SonarCloud scan was successful
