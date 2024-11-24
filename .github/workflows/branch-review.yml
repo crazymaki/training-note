@@ -8,8 +8,8 @@ on:
     branches:
       - main
 
-  permissions:
-    issues: write
+permissions:
+  issues: write
 
 jobs:
   sonarcloud:
