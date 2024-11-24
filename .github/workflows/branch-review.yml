@@ -18,7 +18,10 @@ jobs:
       - name: Set up SonarQube Scanner
         uses: sonarsource/sonarcloud-github-action@v1
         with:
-          sonar_token: ${{ secrets.SONAR_TOKEN }} # GitHub Secretsに設定したSONAR_TOKEN
+          entryPoint: "sonar-scanner"
+          args: "-Dsonar.projectKey=${{ github.repository }} -Dsonar.organization=your-organization-key -Dsonar.host.url=https://your-sonar-instance.com"
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarQubeトークン
 
       # SonarQube解析の実行
       - name: Run SonarQube Analysis
